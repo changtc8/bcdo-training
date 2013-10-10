@@ -36,7 +36,7 @@ ruby-tests:
 	@$(MAKE) -k ruby-unittests
 
 clean:
-	/bin/rm -rf $(TEST_REP_DIR)
+	/bin/rm -rf $(TEST_REP_DIR) $(SELFTEST_LOG)
 
 quiet-selftest:
 	@if ! $(MAKE) selftest >  $(SELFTEST_LOG) 2>&1; then \
