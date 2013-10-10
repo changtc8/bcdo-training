@@ -11,6 +11,7 @@ ACT_DIRS :=$(shell ls -d $(ACT_BASE)/*)
 TEST_REP_DIR :=$(BUILDROOT)/test-reports
 BIN :=$(BUILDROOT)/bin
 RESULTS_DIR :=$(BUILDROOT)/test-results
+SELFTEST_LOG :=selftest.out
 HDR:= =====
 
 .PHONY: clean
@@ -18,7 +19,7 @@ HDR:= =====
 .PHONY: unittests ruby-unittests shell-unittests shiot-tests python-unittests
 
 tests: clean $(TEST_REP_DIR)
-	@$(MAKE) selftest > $(TEST_REP_DIR)/selftest.out 2>&1
+	@$(MAKE) quiet-selftest
 	@$(MAKE) -k $(TOP_TARGETS)
 
 # make -k doesn't exit on first error
@@ -36,6 +37,10 @@ ruby-tests:
 
 clean:
 	/bin/rm -rf $(TEST_REP_DIR)
+
+quiet-selftest:
+	@if ! $(MAKE) selftest >  $(SELFTEST_LOG) 2>&1; then \
+	cat  $(SELFTEST_LOG); exit 2; fi || true
 
 selftest: clean $(TEST_REP_DIR)
 	@$(MAKE) ST_SUF=_st ACT_BASE=$(BUILDROOT)/testacts $(TOP_TARGETS)
@@ -65,9 +70,12 @@ shunit2-tests:
 	&& $(BIN)/shunit2-xunit -v -o $(TEST_REP_DIR)/shunit2$(ST_SUF).xml
 	@echo $(HDR)
 
+NO_DOT_PATH:=$(shell echo "$$PATH" | sed -r -e 's/^(\.?:)*//' -e 's/(:.?)*:/:/g' -e 's/(:.?)*$$//')
 shiot-tests: $(TEST_REP_DIR)
 	@echo $(HDR) running $@
 	cd $(ACT_BASE) \
 	&& $(BIN)/shiot-xunit -v -o $(TEST_REP_DIR)/shiot$(ST_SUF).xml
+	cd $(ACT_BASE) \
+	&& PATH=$(NO_DOT_PATH) $(BIN)/shiot-xunit -v -o $(TEST_REP_DIR)/shiot$(ST_SUF).xml
 	@echo $(HDR)
 
