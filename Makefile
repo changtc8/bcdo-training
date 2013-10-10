@@ -4,9 +4,6 @@
 
 default: tests
 
-export PATH
-PATH:=$(PATH):
-
 TOP_TARGETS :=shell-tests python-tests
 BUILDROOT :=$(shell /bin/pwd -P)
 ACT_BASE ?=$(BUILDROOT)/acts
