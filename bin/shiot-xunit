@@ -26,7 +26,7 @@ runtest()
 {
 	declare tf="$1" outf="$2"
 	declare xstat
-	declare tmpf="$LOGDIR/sx-$$.tmp"
+	declare tmpf="$LOGDIR/sx-out.tmp"
 
 	$DFLAG && echo "+ shiot -C $t"
 
