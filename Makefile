@@ -70,12 +70,9 @@ shunit2-tests:
 	&& $(BIN)/shunit2-xunit -v -o $(TEST_REP_DIR)/shunit2$(ST_SUF).xml
 	@echo $(HDR)
 
-NO_DOT_PATH:=$(shell echo "$$PATH" | sed -r -e 's/^(\.?:)*//' -e 's/(:.?)*:/:/g' -e 's/(:.?)*$$//')
 shiot-tests: $(TEST_REP_DIR)
 	@echo $(HDR) running $@
 	cd $(ACT_BASE) \
 	&& $(BIN)/shiot-xunit -v -o $(TEST_REP_DIR)/shiot$(ST_SUF).xml
-	cd $(ACT_BASE) \
-	&& PATH=$(NO_DOT_PATH) $(BIN)/shiot-xunit -v -o $(TEST_REP_DIR)/shiot$(ST_SUF).xml
 	@echo $(HDR)
 
