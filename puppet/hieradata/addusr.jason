@@ -1,0 +1,10 @@
+# add user data file
+     { 
+       "usr::name" : "joe",
+       "usr::ensure" : "present",
+       "usr::uid"   : 1050,
+       "usr::gid"  : 500,
+       "usr::home"  : "/home/joe",
+       "usr::shell" : "/bin/bash",
+     } 
+

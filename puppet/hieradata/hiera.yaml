@@ -1,0 +1,14 @@
+---
+:backends: 
+  - yaml
+  - json
+:yaml:
+  :datadir: /home/changtc8/bcdo-training/puppet/hieradata
+:jason:
+  :datadir: /home/changtc8/bcdo-training/puppet/hieradata
+:hierarchy: 
+  - common
+#  - user.yaml
+  - "%{::fqdn}"
+:logger: 
+  - console
