@@ -1,0 +1,24 @@
+
+2013-10-11 17:52:06,093 [salt.loaded.int.render.yaml][DEBUG   ] Results of YAML rendering:
+{'sshd-conf': {'augeas.setvalue': [{'prefix': '/files/etc/ssh/sshd_config'}, {'changes': [{'PermitRootLogin': False}]}]}}
+2013-10-11 17:52:06,094 [salt.state       ][ERROR   ] No changes made for sshd-conf
+
+vagrant@precise64:/var/log/salt$ augtool
+augtool> print /files/etc/ssh/sshd_config/PermitRootLogin
+/files/etc/ssh/sshd_config/PermitRootLogin = "yes"
+augtool> set /files/etc/ssh/sshd_config/PermitRootLogin no
+augtool> print /files/etc/ssh/sshd_config/PermitRootLogin
+/files/etc/ssh/sshd_config/PermitRootLogin = "no"
+augtool> quit
+
+    State: - augeas
+    Name:      sshd-conf
+    Function:  setvalue
+        Result:    False
+        Comment:   State augeas.setvalue found in sls ssh is unavailable
+
+        Changes: 
+
+
+agrant@precise64:~$ sudo salt-call augeas.setvalue /files/etc/ssh/sshd_config/PermitRootLogin no
+Function augeas.setvalue is not available

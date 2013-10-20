@@ -1,0 +1,18 @@
+sshd:
+   pkg:
+     - installed
+   
+   service:
+     - running
+     - enable: True
+     - watch:
+       - file: /etc/ssh/sshd_config
+       - pkg: sshd         
+
+   augeas:
+     setvalue:
+       - prefix: /files/etc/ssh/sshd_config
+       - changes:
+           - PermitRootLogin : 'no'`
+       - watch:
+           - pkg: sshd
