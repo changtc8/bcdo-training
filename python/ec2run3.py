@@ -15,7 +15,6 @@ class Ec2(object):
     """
     def __init__(self, argv=None):
         """Initializer
-
         Keyword Arguments:
         argv - list of arguments
         """
@@ -24,51 +23,43 @@ class Ec2(object):
         else:
             self.args = self.parse_args(argv)
 
-    def parse_args(self, argv):
+    def parse_setup(self, parser):
         """parse the argv, build the parser and save args """
 
-        parser = argparse.ArgumentParser(prog='ec2')
         """mutual exclude option for -d or -f """
         group = parser.add_mutually_exclusive_group()
-        i = 1
-        while i < len(argv):
-            """print " self._argv{} = {}".format(i,self._argv[i])"""
-            if argv[i] == '-r':
-                parser.add_argument("-r", "--region",
-                                    help="ec2 region", action='store')
-            elif argv[i] == '-z':
-                parser.add_argument("-z", "--availability-zone",
-                                    help="ec2 availability zone",
-                                    action='store')
-            elif argv[i] == '-a':
-                parser.add_argument("-a", "--AMI",
-                                    help="AMI name", action='store')
-            elif argv[i] == '-d':
-                group.add_argument("-d", "--user_data",
-                                   help="user data string", action='store')
-            elif argv[i] == '-f':
-                group.add_argument("-f", "--user_data_file",
-                                   help="Read user data from file",
-                                   action='store')
-            elif argv[i] == '-g':
-                parser.add_argument("-g", "--group",
-                                    help="Ec2 Security group name or id",
-                                    action='append')
-            elif argv[i] == '-k':
-                parser.add_argument("-k", "--key",
-                                    help="Ec2 keypari name",
-                                    action='store')
-            elif argv[i] == '-t':
-                parser.add_argument("-t", "--instance-type",
-                                    help="Ec2 Instance Type",
-                                    action='store')
-            elif argv[i] == '-n':
-                parser.add_argument("-n", "--instance-count",
-                                    help="Maximum instance to launch",
-                                    action='store', type=int)
-            else:
-                print "invalid option"
-            i = i + 2
+
+        parser.add_argument("-r", "--region",
+                            help="ec2 region", action='store')
+        parser.add_argument("-z", "--availability-zone",
+                            help="ec2 availability zone",
+                            action='store')
+        parser.add_argument("-a", "--AMI",
+                            help="AMI name", action='store')
+        group.add_argument("-d", "--user_data",
+                           help="user data string", action='store')
+        group.add_argument("-f", "--user_data_file",
+                           help="Read user data from file",
+                           action='store')
+        parser.add_argument("-g", "--group",
+                            help="Ec2 Security group name or id",
+                            action='append')
+        parser.add_argument("-k", "--key",
+                             help="Ec2 keypari name",
+                             action='store')
+        parser.add_argument("-t", "--instance-type",
+                            help="Ec2 Instance Type",
+                            action='store')
+        parser.add_argument("-n", "--instance-count",
+                            help="Maximum instance to launch",
+                            action='store', type=int)
+        parser.add_argument("-v", "--verbose",
+                             help="verbose mode",
+                             action='store_true')
+
+    def parse_args(self, argv):
+        parser = argparse.ArgumentParser(prog='ec2')
+        self.parse_setup(parser)
         return parser.parse_args()
 
     def print_args(self):
