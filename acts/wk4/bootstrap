@@ -1,0 +1,24 @@
+#!/bin/bash
+time=`date +"%m_%d_%Y"`
+exec 2>&1 > /tmp/bootstrap_$time
+sudo apt-get update
+#rt=check("apt-get")
+# check (msg)
+#    if [ $? != 0 ]:
+#       echo $1
+#       echo filemane
+#       exit -1 
+#    fi
+# if rt = -1 decide what to do
+
+sudo wget http://apt.puppetlabs.com/puppetlabs-release-precise.deb
+sudo dpkg -i puppetlabs-release-precise.deb
+sudo apt-get update
+sudo apt-get install --yes puppet
+
+sed -i.bak -e /START/s/no/yes/ /etc/default/puppet
+service puppet start 
+
+# ssh ubuntu@public_dns < script-name.sh
+#sudo puppet resource service puppet ensure=running enable=true
+

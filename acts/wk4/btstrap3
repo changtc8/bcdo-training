@@ -1,0 +1,7 @@
+#!/bin/bash
+time=`date +"%m_%d_%Y"`
+exec 2>&1 > /tmp/bootstrap_$time
+
+sudo apt-get install --yes nginx
+sudo service nginx start
+

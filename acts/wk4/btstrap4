@@ -1,0 +1,30 @@
+#!/bin/bash
+time=`date +"%m_%d_%Y"`
+exec 2>&1 > /tmp/bootstrap_$time
+
+gpg --keyserver  hkp://keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+gpg -a --export CD2EFD2A | sudo apt-key add -
+
+sudo echo 'deb http://repo.percona.com/apt quantal main' >> /etc/apt/sources.list
+sudo echo 'deb-src http://repo.percona.com/apt quantal main' >> /etc/apt/sources.list
+                                                                                                                
+# Next we need to pin Percona's package so that they don't get overwritten 
+# by upgrades from the Ubuntu repositories:
+sudo echo 'Package: *' >> /etc/apt/preferences.d/00percona.pref
+sudo echo 'Pin: release o=Percona Development Team' >> /etc/apt/preferences.d/00percona.pref
+sudo echo 'Pin-Priority: 1001' >> /etc/apt/preferences.d/00percona.pref
+                                                                                                                
+# check file and backup if any
+# sudo cp -Rf /var/lib/mysql /var/lib/mysql-old 
+# sudo cp /etc/my.cnf /etc/my.cnf-old 
+
+sudo apt-get update
+sudo apt-get install percona-server-server-5.5 percona-server-client-5.5 --yes
+# make sure to reset the root passwd
+
+# start mysql at boottime
+sudo update-rc.d mysql defaults
+
+sudo service mysql status
+
+
