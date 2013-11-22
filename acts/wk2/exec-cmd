@@ -1,0 +1,11 @@
+# before start scrpt save st-time YYYY-MM-DD 
+# 2013-10-08 04:36:51
+st-time="`date +%Y-%m-%d` `date +%H:%M:%S `"
+st-time=`date +%Y-%m-%d-%H:%M:%S`
+# get the file modify time
+modify-time=`stat sshd_config | grep Modify | cut -c 9-27`
+# set filechange if modify-time is > st-time
+# run cmd if file has changed
+if [ -f /etc/ssh/sshd_config ] && [ filechange -eq 1 ]; then
+    ssh precise64 /etc/init.d/ssh restart
+fi

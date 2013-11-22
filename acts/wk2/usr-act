@@ -1,0 +1,20 @@
+# useradd -D to check default
+# useradd -D -g 200 to reset default group
+# useradd -m -g 500 username -u 1000
+
+# input are user name separate by space; can be multiple lines
+# read input from file
+# assume the default group for user is 100
+useradd -D -g 100
+u=1000
+while read line;
+do
+   arry=( $line )
+   a=0
+   while [ $a -lt ${#arry[@]} ]
+   do
+      `useradd ${arry[$a]} -u $u`
+      a=`expr $a + 1`
+      u=`expr $u + 1`
+   done
+done

@@ -1,0 +1,20 @@
+groupadd dev -g 500
+groupdel sysadmin_gods
+
+# use grep sysadmin /etc/group to find out group exist or not
+# input are grp name separate by space; can be multiple lines 
+# read input from file
+g=500
+while read line;
+do
+   arry=( $line )
+   a=0
+   while [ $a -lt ${#arry[@]} ]
+   do
+      `groupadd ${arry[$a]} -g $g`
+      a=`expr $a + 1`
+      g=`expr $g + 1`
+   done
+done
+
+    
