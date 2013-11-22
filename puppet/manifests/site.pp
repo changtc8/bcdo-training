@@ -1,4 +1,5 @@
 node default {
+   include timezone
    include motd
 #  include cronj
 #  include execj
@@ -6,5 +7,4 @@ node default {
 #  include hostname
 #  include ssh
    include usr
-#   class { "usr": }
 }
